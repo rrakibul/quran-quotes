@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quran Quotes</title>
+    <style>
+        * {box-sizing: border-box}
+        body {font-family: Verdana, sans-serif; margin:0}
+
+        .slideshow-container {
+            position: relative;
+            background: #f1f1f1f1;
+        }
+
+        .mySlides {
+            display: none;
+            padding: 80px;
+            text-align: center;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            margin-top: -30px;
+            padding: 16px;
+            color: #888;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        .next {
+            position: absolute;
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+        }
+
+        .dot-container {
+            text-align: center;
+            padding: 20px;
+            background: #ddd;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+
+        q {font-style: italic;}
+
+        .info {
+            color: cornflowerblue;
+            font-size: medium;
+        }
+
+        .heading {
+            text-align: center;
+        }
+
+        .arabic {
+            font-family: amiri-quran-colored-full, sans-serif;
+            font-weight:normal;
+            font-style:normal;
+            font-size: x-large;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .quote {
+            padding: 5px;
+            text-align: center;
+            font-size: large;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        @font-face {
+            font-family: "amiri-quran-colored-full";
+            src: url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full.eot");
+            src: url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full.woff") format("woff"),
+            url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full-org.otf") format("opentype"),
+            url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full.svg") format("svg");
+        }
+    </style>
+</head>
+<body onload="displayRandomVerses()">
+
+<h1 class="heading">Al-Quran Quotes</h1>
+<div class="slideshow-container">
+
+    <div class="mySlides" id="slide-1">
+        <div id="arabic-verse-1" class="arabic"></div>
+        <div class="quote">
+            <q id="translate-verse-1"></q>
+            <p class="info">- Chapter: <span id="chapter-no-1"></span>, Verse: <span id="verse-no-1"></span></p>
+        </div>
+    </div>
+
+    <div class="mySlides" id="slide-2">
+        <div id="arabic-verse-2" class="arabic"></div>
+        <div class="quote">
+            <q id="translate-verse-2"></q>
+            <p class="info">- Chapter: <span id="chapter-no-2"></span>, Verse: <span id="verse-no-2"></span></p>
+        </div>
+    </div>
+
+    <div class="mySlides" id="slide-3">
+        <div id="arabic-verse-3" class="arabic"></div>
+        <div class="quote">
+            <q id="translate-verse-3"></q>
+            <p class="info">- Chapter: <span id="chapter-no-3"></span>, Verse: <span id="verse-no-3"></span></p>
+        </div>
+    </div>
+
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+</div>
+
+<div class="dot-container">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <button class="button" onclick="displayRandomVerses()">Next Quotes</button>
+</div>
+
+<script type="text/javascript" src="quran-verse.js"></script>
+<script>
+    function displayRandomVerses() {
+        let quran = new QuranVerse();
+        let verses = quran.getRandomVerses();
+
+        verses.then((results) => {
+            results.forEach(function(verse, index) {
+                document.getElementById('chapter-no-' + (index + 1)).innerHTML = verse.translateQuote.chapter;
+                document.getElementById('verse-no-' + (index + 1)).innerHTML = verse.translateQuote.verse;
+                document.getElementById('translate-verse-' + (index + 1)).innerHTML = verse.translateQuote.text;
+
+                if (verse.arabicQuote) {
+                    document.getElementById('arabic-verse-' + (index + 1)).innerHTML = verse.arabicQuote.text;
+                }
+            });
+        });
+    }
+
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " active";
+    }
+</script>
+</body>
+</html>
