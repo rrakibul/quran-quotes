@@ -136,6 +136,8 @@ class QuranVerse {
 
     translateEditionName = 'ben-muhiuddinkhan';
     apiEndpoint = 'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions';
+    currentChapterNumber = 1;
+    currentVerseNumber = 1;
 
     options = {
         chapterInfo: this.chapterInfo,
@@ -143,6 +145,7 @@ class QuranVerse {
         verseCount: 3,//fetch number of sequential verses at a time
         arabicEditionName: 'ara-quranindopak',
         language: 'bengali',
+        persistLanguage: true
     }
 
     constructor(config) {
@@ -150,13 +153,53 @@ class QuranVerse {
             this.options = {...this.options, ...config};
         }
 
-        this.translateEditionName = this.editionNames.find(item => item.language === this.options.language).name
+        if (this.options.persistLanguage && localStorage) {
+            if (localStorage.getItem('quran.option.language') === null) {
+                this.setTranslateEditionName(this.options.language);
+            }
+        } else {
+            this.setTranslateEditionName(this.options.language);
+        }
+    }
+
+    getCurrentLanguage() {
+        let language = this.options.language;
+
+        if (this.options.persistLanguage && localStorage) {
+            language = localStorage.getItem('quran.option.language');
+        }
+
+        return language;
+    }
+
+    async changeLanguage(language) {
+        await this.setTranslateEditionName(language);
+
+        return await this.getVerses(this.currentChapterNumber, this.currentVerseNumber);
+    }
+
+    getTranslateEditionName() {
+        let language = this.options.language;
+
+        if (this.options.persistLanguage && localStorage) {
+            language = localStorage.getItem('quran.option.language');
+        }
+
+        return this.editionNames.find(item => item.language === language).name
+    }
+
+    setTranslateEditionName(language) {
+        if (this.options.persistLanguage && localStorage) {
+            localStorage.setItem('quran.option.language', language);
+        }
+
+        this.translateEditionName = this.editionNames.find(item => item.language === language).name;
     }
 
     async fetchVerse(chapterNumber, verseNumber) {
         let quotes = { translateQuote: null, arabicQuote: null };
 
-        quotes.translateQuote = await this.fetchResource(`${this.apiEndpoint}/${this.translateEditionName}/${chapterNumber}/${verseNumber}.min.json`);
+        quotes.translateQuote = await this.fetchResource(`${this.apiEndpoint}/${this.getTranslateEditionName()}/${chapterNumber}/${verseNumber}.min.json`);
 
         if (this.options.includeArabicVerse) {
             quotes.arabicQuote = await this.fetchResource(`${this.apiEndpoint}/${this.options.arabicEditionName}/${chapterNumber}/${verseNumber}.min.json`);
@@ -184,6 +227,11 @@ class QuranVerse {
         let promises = [];
 
         for (let i = 0; i < this.options.verseCount; i++) {
+            if (i === 0) {
+                this.currentChapterNumber = chapterNumber;
+                this.currentVerseNumber = verseNumber;
+            }
+
             promises.push(await this.fetchVerse(chapterNumber, verseNumber + i));
         }
 

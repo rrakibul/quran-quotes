@@ -146,6 +146,11 @@
 </div>
 
 <div class="dot-container">
+    <select id="language">
+        <option value="bengali">Bengali</option>
+        <option value="english">English</option>
+        <option value="urdu">Urdu</option>
+    </select>
     <span class="dot" onclick="currentSlide(1)"></span>
     <span class="dot" onclick="currentSlide(2)"></span>
     <span class="dot" onclick="currentSlide(3)"></span>
@@ -154,10 +159,24 @@
 
 <script type="text/javascript" src="quran-verse.js"></script>
 <script>
+    let quran = new QuranVerse();
+
+    document.getElementById('language').value = quran.getCurrentLanguage();
+
+    document.getElementById('language').addEventListener('change', (event) => {
+        console.log(event.target.value)
+        let verses = quran.changeLanguage(event.target.value);
+
+        populateVerses(verses);
+    })
+
     function displayRandomVerses() {
-        let quran = new QuranVerse();
         let verses = quran.getRandomVerses();
 
+        populateVerses(verses);
+    }
+
+    function populateVerses(verses) {
         verses.then((results) => {
             results.forEach(function(verse, index) {
                 document.getElementById('chapter-no-' + (index + 1)).innerHTML = verse.translateQuote.chapter;
