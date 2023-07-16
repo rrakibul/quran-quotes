@@ -153,36 +153,38 @@ class QuranVerse {
         this.translateEditionName = this.editionNames.find(item => item.language === this.options.language).name
     }
 
-    async fetchData(index, randomChapterVerse) {
-        const randomVerse = randomChapterVerse.verse + index;
-        const strRandomChapterVerse = randomChapterVerse.chapter + '/' + randomVerse;
+    async fetchVerse(chapterNumber, verseNumber) {
         let quotes = { translateQuote: null, arabicQuote: null };
 
-        try {
-            const response = await fetch(`${this.apiEndpoint}/${this.translateEditionName}/${strRandomChapterVerse}.min.json`);
-            quotes.translateQuote = await response.json();
-        } catch (error) {
-            throw error;
-        }
+        quotes.translateQuote = await this.fetchResource(`${this.apiEndpoint}/${this.translateEditionName}/${chapterNumber}/${verseNumber}.min.json`);
 
         if (this.options.includeArabicVerse) {
-            try {
-                const arabicResponse = await fetch(`${this.apiEndpoint}/${this.options.arabicEditionName}/${strRandomChapterVerse}.min.json`);
-                quotes.arabicQuote = await arabicResponse.json();
-            } catch (error) {
-                throw error;
-            }
+            quotes.arabicQuote = await this.fetchResource(`${this.apiEndpoint}/${this.options.arabicEditionName}/${chapterNumber}/${verseNumber}.min.json`);
         }
 
         return quotes;
     }
 
-    getRandomVerses() {
-        let promises = [];
+    async fetchResource(url) {
+        try {
+            const response = await fetch(url)
+            return response.json();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getRandomVerses() {
         let randomChapterVerse = this.getRandomVerseNumber();
 
+        return await this.getVerses(randomChapterVerse.chapterNumber, randomChapterVerse.verseNumber);
+    }
+
+    async getVerses(chapterNumber, verseNumber) {
+        let promises = [];
+
         for (let i = 0; i < this.options.verseCount; i++) {
-            promises.push(this.fetchData(i, randomChapterVerse))
+            promises.push(await this.fetchVerse(chapterNumber, verseNumber + i));
         }
 
         return Promise.all(promises);
@@ -199,8 +201,8 @@ class QuranVerse {
             randomVerseNumber = this.getRandomNumber(minNumber, maxNumber);
 
             return {
-                chapter: randomChapterNumber,
-                verse: randomVerseNumber
+                chapterNumber: randomChapterNumber,
+                verseNumber: randomVerseNumber
             }
         }
 
