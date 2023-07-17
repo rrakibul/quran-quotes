@@ -1,0 +1,180 @@
+* {box-sizing: border-box}
+
+body {
+    background-image: url("../images/pattern1.jpeg");
+    background-color: #bbbbbb;
+}
+
+.slideshow-container {
+    position: relative;
+    color: darkseagreen;
+}
+
+.mySlides {
+    display: none;
+    padding: 0 100px;
+    text-align: center;
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    width: auto;
+    padding: 16px;
+    color: #888;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.next {
+    position: absolute;
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: #ffc107;
+    color: white;
+    opacity: 70%;
+    border-radius: 10px;
+}
+
+.dot-container {
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 15px;
+    position: relative;
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+    background-color: #717171;
+}
+
+q {font-style: italic;}
+
+.info {
+    color: #bdbebf;
+    font-size: large;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.arabic {
+    font-family: amiri-quran-colored-full, sans-serif;
+    font-weight:normal;
+    font-style:normal;
+    font-size: x-large;
+    padding: 5px;
+    text-align: center;
+}
+
+.quote {
+    padding: 5px;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.button {
+    background-color: #ffc107;
+    border: none;
+    color: #000000;
+    font-weight: bold;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: medium;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+    opacity: 70%;
+}
+
+.button:hover {
+    background-color: #ffc107;
+    opacity: 90%;
+}
+
+#loading-status {
+    text-align: center;
+    display: none;
+}
+
+#error-status {
+    text-align: center;
+    display: none;
+    color: red;
+    font-size: large;
+    margin-bottom: 30px;
+    font-style: italic;
+    font-weight: bold;
+    opacity: 45%;
+}
+
+#option {
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+
+.header {
+    text-align: center;
+    position: relative;
+}
+
+.heading {
+    font-size: 30px;
+    padding-top: 10px;
+}
+
+.slides {
+    display: none;
+}
+
+.wrapper {
+    min-width: 600px
+}
+
+.form-select {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+@font-face {
+    font-family: "amiri-quran-colored-full";
+    src: url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full.eot");
+    src: url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full.woff") format("woff"),
+    url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full-org.otf") format("opentype"),
+    url("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/amiri-quran-colored-full.svg") format("svg");
+}
