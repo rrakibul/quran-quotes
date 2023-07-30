@@ -3,7 +3,7 @@
 This open-source sample project uses a simple plugin to fetch verses from the Holy Quran. 
 
 Its primary source of data is another open-source project https://github.com/fawazahmed0/quran-api. 
-May Allah give him rewards on the earth and heaven both. 
+May Allah give its creator enough rewards on both earth and heaven. 
 
 ### Plugin Usage
 - CDN URL for the plugin file: https://cdn.jsdelivr.net/gh/rrakibul/quran-quotes/js/quran.js
